@@ -149,7 +149,7 @@ class CameraEngineVideoEncoder {
         
         self.assetWriter.finishWriting { () -> Void in
             if let blockCompletion = blockCompletion {
-                blockCompletion(url: self.assetWriter.outputURL, error: nil)
+                blockCompletion(self.assetWriter.outputURL, nil)
             }
         }
     }

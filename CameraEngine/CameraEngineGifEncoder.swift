@@ -11,7 +11,7 @@ import ImageIO
 import MobileCoreServices
 import AVFoundation
 
-public typealias blockCompletionGifEncoder = (success: Bool, url: URL?) -> (Void)
+public typealias blockCompletionGifEncoder = (_ success: Bool, _ url: URL?) -> (Void)
 
 class CameraEngineGifEncoder {
     
@@ -27,8 +27,8 @@ class CameraEngineGifEncoder {
             kCGImagePropertyGIFDelayTime as String: delayTime
             ]]
         
-        guard let destination = CGImageDestinationCreateWithURL(fileUrl, kUTTypeGIF, frames.count, nil) else {
-            self.blockCompletionGif?(success: false, url: nil)
+        guard let destination = CGImageDestinationCreateWithURL(fileUrl as CFURL, kUTTypeGIF, frames.count, nil) else {
+            self.blockCompletionGif?(false, nil)
             return
         }
         
@@ -42,10 +42,10 @@ class CameraEngineGifEncoder {
         
         if !CGImageDestinationFinalize(destination) {
             print("error fail finalize")
-            self.blockCompletionGif?(success: false, url: nil)
+            self.blockCompletionGif?(false, nil)
         }
         else {
-            self.blockCompletionGif?(success: true, url: fileUrl)
+            self.blockCompletionGif?(true, fileUrl)
         }
     }
 }

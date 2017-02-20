@@ -10,7 +10,7 @@ import UIKit
 import Photos
 import ImageIO
 
-public typealias blockCompletionSaveMedia = (success: Bool, error: Error?) -> (Void)
+public typealias blockCompletionSaveMedia = (_ success: Bool, _ error: Error?) -> (Void)
 
 public class CameraEngineFileManager {
     

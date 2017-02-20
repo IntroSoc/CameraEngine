@@ -69,14 +69,14 @@ let cameraEngineSessionQueueIdentifier = "com.cameraEngine.capturesession"
 public class CameraEngine: NSObject {
     
     private let session = AVCaptureSession()
-    private let cameraDevice = CameraEngineDevice()
-    private let cameraOutput = CameraEngineCaptureOutput()
+    fileprivate let cameraDevice = CameraEngineDevice()
+    fileprivate let cameraOutput = CameraEngineCaptureOutput()
     private let cameraInput = CameraEngineDeviceInput()
     private let cameraMetadata = CameraEngineMetadataOutput()
-    private let cameraGifEncoder = CameraEngineGifEncoder()
+    fileprivate let cameraGifEncoder = CameraEngineGifEncoder()
     private var captureDeviceIntput: AVCaptureDeviceInput?
     
-    private var sessionQueue: DispatchQueue = DispatchQueue(label: cameraEngineSessionQueueIdentifier)
+    fileprivate var sessionQueue: DispatchQueue = DispatchQueue(label: cameraEngineSessionQueueIdentifier)
     
     private var _torchMode: AVCaptureTorchMode = .off
     public var torchMode: AVCaptureTorchMode! {
@@ -454,15 +454,15 @@ public extension CameraEngine {
 
 public extension CameraEngine {
     
-    public func capturePhoto(_ blockCompletion: blockCompletionCapturePhoto) {
+    public func capturePhoto(_ blockCompletion: @escaping blockCompletionCapturePhoto) {
         self.cameraOutput.capturePhoto(blockCompletion)
     }
 	
-	public func capturePhotoBuffer(_ blockCompletion: blockCompletionCapturePhotoBuffer) {
-		self.cameraOutput.capturePhotoBuffer(blockCompletion)
+	public func capturePhotoBuffer(_ blockCompletion: @escaping blockCompletionCapturePhotoBuffer) {
+		self.cameraOutput.capturePhotoBuffer(blockCompletion: blockCompletion)
 	}
     
-    public func startRecordingVideo(_ url: URL, blockCompletion: blockCompletionCaptureVideo) {
+    public func startRecordingVideo(_ url: URL, blockCompletion: @escaping blockCompletionCaptureVideo) {
         if self.isRecording == false {
             self.sessionQueue.async(execute: { () -> Void in
                 self.cameraOutput.startRecordVideo(blockCompletion, url: url)
@@ -478,7 +478,7 @@ public extension CameraEngine {
         }
     }
     
-    public func createGif(_ fileUrl: URL, frames: [UIImage], delayTime: Float, loopCount: Int = 0, completionGif: blockCompletionGifEncoder) {
+    public func createGif(_ fileUrl: URL, frames: [UIImage], delayTime: Float, loopCount: Int = 0, completionGif: @escaping blockCompletionGifEncoder) {
         self.cameraGifEncoder.blockCompletionGif = completionGif
         self.cameraGifEncoder.createGif(fileUrl, frames: frames, delayTime: delayTime, loopCount: loopCount)
     }
